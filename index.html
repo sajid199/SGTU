@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGTU - Enrollment Verification</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header-section {
+            background: white;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .university-logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+        }
+        
+        .university-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .university-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+            color: #dc3545;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        
+        .university-subtitle {
+            font-size: 1rem;
+            margin: 5px 0 0 0;
+            color: #28a745;
+            font-weight: 500;
+        }
+        
+        .sidebar {
+            background: #ffffff;
+            min-height: calc(100vh - 120px);
+            padding: 0;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .sidebar-item {
+            color: #6c757d;
+            padding: 15px 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .sidebar-item:hover, .sidebar-item.active {
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+        }
+        
+        .sidebar-item i {
+            margin-right: 10px;
+            width: 16px;
+        }
+        
+        .main-content {
+            padding: 30px;
+            background: white;
+            margin: 0;
+            min-height: calc(100vh - 120px);
+        }
+        
+        .verification-header {
+            background: #cce7f0;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border: 1px solid #b8daff;
+        }
+        
+        .verification-header h3 {
+            color: #495057;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 500;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+        
+        .enrollment-details {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #ffd700;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .details-table {
+            margin-top: 20px;
+        }
+        
+        .details-table th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+            padding: 15px 12px;
+            border: none;
+        }
+        
+        .details-table td {
+            padding: 15px 12px;
+            vertical-align: middle;
+            border-color: #dee2e6;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            border-left: 5px solid #dc3545;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .footer {
+            background: white;
+            color: #6c757d;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin-left: 10px;
+        }
+        
+        .logo-img {
+            max-height: 80px;
+            width: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .university-title {
+                font-size: 1.5rem;
+            }
+            .university-subtitle {
+                font-size: 0.9rem;
+            }
+            .logo-img {
+                max-height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2 col-4">
+                    <img src="./image/logo-wide.png" alt="University Logo" class="logo-img img-fluid">
+                </div>
+                <div class="col-md-10 col-8">
+                    <h1 class="university-title">SIKKIM GLOBAL TECHNICAL UNIVERSITY</h1>
+                    <p class="university-subtitle">Enrollment Verification</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 p-0">
+                <div class="sidebar">
+                    <a href="#" class="sidebar-item active">
+                        <i class="fas fa-home"></i> HOME
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10">
+                <div class="main-content">
+                    <!-- Verification Header -->
+                    <div class="verification-header">
+                        <h3>Verify Your Enrollment</h3>
+                    </div>
+
+                    <!-- Search Form -->
+                    <form id="verificationForm">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="candidateName" class="form-label">Name of the Candidate</label>
+                                <input type="text" class="form-control" id="candidateName" placeholder="Enter full name">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="dateOfBirth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dateOfBirth" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="enrollmentNumber" class="form-label">Enrollment Number</label>
+                                <input type="text" class="form-control" id="enrollmentNumber" placeholder="Enter enrollment number">
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary search-btn">
+                                <i class="fas fa-search me-2"></i>
+                                Search
+                                <div class="spinner-border spinner-border-sm loading-spinner" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Results Section -->
+                    <div id="resultsSection"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p class="mb-0">© 2023-2024 Sikkim Global Technical University</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Hardcoded student data
+    const studentDatabase = [
+        {
+            enrollmentNo: "2023100342830578",
+            candidateName: "MD SAJID AHMAD",
+            fatherName: "MD NAZIR ANSARI",
+            dateOfBirth: "1994-01-05",
+            session: "2023 - 2024",
+            course: "POST GRADUATE DIPLOMA",
+            stream: "COMPUTER APPLICATIONS",
+            status: "Active"
+        },
+        {
+            enrollmentNo: "2023100344640579",
+            candidateName: "KHALLILUR RAHMAN",
+            fatherName: "RAJESH SHARMA", 
+            dateOfBirth: "1994-01-05",
+            session: "2023 - 2024",
+            course: "BACHELOR OF TECHNOLOGY",
+            stream: "COMPUTER SCIENCE",
+            status: "Active"
+        },
+        {
+            enrollmentNo: "2023100342830580",
+            candidateName: "RAHUL KUMAR",
+            fatherName: "SURESH KUMAR",
+            dateOfBirth: "1996-07-22",
+            session: "2023 - 2024", 
+            course: "MASTER OF COMPUTER APPLICATIONS",
+            stream: "SOFTWARE ENGINEERING",
+            status: "Active"
+        },
+        {
+            enrollmentNo: "2023100342830581",
+            candidateName: "ANITA SINGH",
+            fatherName: "RAMESH SINGH",
+            dateOfBirth: "1994-11-08",
+            session: "2023 - 2024",
+            course: "POST GRADUATE DIPLOMA",
+            stream: "INFORMATION TECHNOLOGY",
+            status: "Active"
+        },
+        {
+            enrollmentNo: "2023100342830582",
+            candidateName: "VIKASH GUPTA",
+            fatherName: "MAHESH GUPTA",
+            dateOfBirth: "1995-09-12",
+            session: "2023 - 2024",
+            course: "BACHELOR OF COMPUTER APPLICATIONS",
+            stream: "WEB DEVELOPMENT",
+            status: "Active"
+        }
+    ];
+
+    document.getElementById('verificationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let candidateName = document.getElementById('candidateName').value.trim().toUpperCase();
+        let dateOfBirth = document.getElementById('dateOfBirth').value;
+        const enrollmentNumber = document.getElementById('enrollmentNumber').value.trim();
+        
+        // Parse date if it's in MM/DD/YYYY format
+        if (dateOfBirth.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            const [month, day, year] = dateOfBirth.split('/');
+            dateOfBirth = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+        
+        // Show loading spinner
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const searchBtn = document.querySelector('.search-btn');
+        loadingSpinner.style.display = 'inline-block';
+        searchBtn.disabled = true;
+        
+        // Simulate API call delay
+        setTimeout(() => {
+            let foundStudent = null;
+            
+            // Search logic
+            for (let student of studentDatabase) {
+                let nameMatch = !candidateName || student.candidateName.toUpperCase().includes(candidateName);
+                let dobMatch = !dateOfBirth || student.dateOfBirth === dateOfBirth;
+                let enrollmentMatch = !enrollmentNumber || student.enrollmentNo === enrollmentNumber;
+                
+                if (nameMatch && dobMatch && enrollmentMatch) {
+                    foundStudent = student;
+                    break;
+                }
+            }
+            
+            displayResults(foundStudent);
+            
+            // Hide loading spinner
+            loadingSpinner.style.display = 'none';
+            searchBtn.disabled = false;
+        }, 1000);
+    });
+    
+    function displayResults(student) {
+        const resultsSection = document.getElementById('resultsSection');
+        
+        if (student) {
+            resultsSection.innerHTML = `
+                <div class="enrollment-details">
+                    <h4 class="mb-4">
+                        <i class="fas fa-user-graduate me-2"></i>
+                        Enrollment Details
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table details-table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Enrollment No</th>
+                                    <th scope="col">Candidate Name</th>
+                                    <th scope="col">Father's Name</th>
+                                    <th scope="col">Session</th>
+                                    <th scope="col">Course</th>
+                                    <th scope="col">Stream</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>${student.enrollmentNo}</strong></td>
+                                    <td>${student.candidateName}</td>
+                                    <td>${student.fatherName}</td>
+                                    <td>${student.session}</td>
+                                    <td>${student.course}</td>
+                                    <td>${student.stream}</td>
+                                    <td><span class="status-badge status-active">${student.status}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        <p class="mb-0">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Verification Status:</strong> <span class="text-success">Successfully Verified</span>
+                        </p>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            Verified on: ${new Date().toLocaleDateString('en-GB')}
+                        </small>
+                    </div>
+                </div>
+            `;
+        } else {
+            resultsSection.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                    <h5>No Details Found</h5>
+                    <p class="mb-0">Please contact at <a href="mailto:info@sikkimglobaltechnicaluniversity.co.in">info@sikkimglobaltechnicaluniversity.co.in</a></p>
+                    <small class="text-muted d-block mt-2">
+                        Please verify the information entered and try again.
+                    </small>
+                </div>
+            `;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: white;
+  padding: 15px;
+  text-align: center;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.sidebar span {
+  display: block;
+  font-weight: bold;
+  color: #555;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.university-title {
+  color: red;
+  font-weight: bold;
+}
+
+.subtitle {
+  margin-top: -10px;
+}
+
+.card {
+  border-radius: 5px;
+}
+
+.card-header {
+  font-size: 18px;
+}
